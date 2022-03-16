@@ -3,3 +3,4 @@ __pycache__/
 coinex
 *.sqlite3
 cotacao/settings.py
+assets.txt
