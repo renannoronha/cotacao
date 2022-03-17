@@ -1,4 +1,12 @@
-from django.shortcuts import render
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from moeda.models import Moeda, Cotacao
+
+from .serializers import MoedaSerializer, CotacaoSerializer
+
+from datetime import datetime
 
 # Create your views here.
 class MoedaList(APIView):
