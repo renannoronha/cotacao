@@ -2,7 +2,7 @@ from django.shortcuts import render
 from base.views import BaseView
 
 # Create your views here.
-class HomeView(BaseView):
+class MoedaView(BaseView):
     template_name = 'moeda/moeda.html'
     title = 'Moeda'
 
