@@ -1,11 +1,4 @@
-from django.http import Http404
-from django.db.models import F
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
-from moeda.models import Moeda, Cotacao
-
-from .serializers import MoedaSerializer, CotacaoSerializer
+from django.shortcuts import render
 
 # Create your views here.
 class MoedaList(APIView):
@@ -43,6 +36,19 @@ class CotacaoList(APIView):
         if request.GET.get('dataFinal', None):
             cotacoes.filter(data__lte=request.get('dataFinal'))
         
-        # cotacoes = cotacoes.annotate(codigo=F('moeda__codigo'), simbolo=F('moeda__simbolo'))
         serializer = CotacaoSerializer(cotacoes, many=True)
         return Response(serializer.data)
+
+class CotacaoHighchartList(APIView):
+    """
+    Cotações das moedas por data para o gráfico.
+    """
+    def get(self, request, base, moeda, format=None):
+        cotacoes = Cotacao.objects.filter(base=base, moeda=moeda).order_by('-data')
+        if request.GET.get('dataInicial', None):
+            cotacoes.filter(data__gte=request.get('dataInicial'))
+        if request.GET.get('dataFinal', None):
+            cotacoes.filter(data__lte=request.get('dataFinal'))
+        
+        data = [[datetime(year=c[0].year, month=c[0].month, day=c[0].day).timestamp()*1000, c[1]] for c in cotacoes.values_list('data', 'cotacao')]
+        return Response(data)
