@@ -10,18 +10,18 @@ def get_cotacoes(dataInicial, dataFinal):
         if r.status_code == 200:
             rates = r.json()
             data = rates['date']
-            base = rates['base']
+            base = Moeda.objects.get(codigo=rates['base'])
             for moeda in Moeda.objects.all():
                 default = {
                     'moeda': moeda,
-                    'base': moeda,
+                    'base': base,
                     'data': data,
                     'cotacao': rates['rates'][moeda.codigo],
                 }
                 print(default)
                 (obj, created) = Cotacao.objects.update_or_create(
                     moeda = moeda,
-                    base = moeda,
+                    base = base,
                     data = data,
                     cotacao = rates['rates'][moeda.codigo],
                     defaults = default
