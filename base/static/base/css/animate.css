@@ -7649,3 +7649,10 @@ textarea.form-control {
         stroke-dashoffset: -136px;
     }
 }
+
+.label {
+    color: #fff !important;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+}
