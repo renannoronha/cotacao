@@ -8,6 +8,13 @@ def get_cotacoes(dataInicial, dataFinal):
     """
     Importa e salva as dados da API Vatcomply de acordo com as datas fornecidas.
     """
+
+    # Setar valor inicial e final das datas para quando a função for chamada pelo cronjob
+    if not dataInicial:
+        dataInicial = Cotacao.objects.all().order_by('-data').first().data
+    if not dataFinal:
+        dataFinal = datetime.now().date()
+    
     while dataInicial <= dataFinal:
         r = requests.get('https://api.vatcomply.com/rates?base=USD&date=' + dataInicial.strftime('%Y-%m-%d'))
         if r.status_code == 200:
