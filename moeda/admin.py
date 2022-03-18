@@ -22,6 +22,7 @@ class CotacaoAdmin(DjangoObjectActions, admin.ModelAdmin):
     )
     ordering = ['-data']
     
+    # Configuração do botão para buscar novas cotações.
     def importar_cotacoes(modeladmin, request, queryset):
         try:
             get_cotacoes(datetime.strptime(str(Cotacao.objects.all().order_by('-data').first().data), '%Y-%m-%d'), datetime.today())

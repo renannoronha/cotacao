@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 from .models import Moeda, Cotacao
 
 def get_cotacoes(dataInicial, dataFinal):
+    """
+    Importa e salva as dados da API Vatcomply de acordo com as datas fornecidas.
+    """
     while dataInicial <= dataFinal:
         r = requests.get('https://api.vatcomply.com/rates?base=USD&date=' + dataInicial.strftime('%Y-%m-%d'))
         if r.status_code == 200:

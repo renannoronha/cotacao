@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 # Create your views here.
 class MoedaList(APIView):
     """
-    List all Moedas.
+    Listar todas as moedas.
     """
     def get(self, request, format=None):
         moedas = Moeda.objects.all()
@@ -22,7 +22,7 @@ class MoedaList(APIView):
 
 class MoedaDetail(APIView):
     """
-    Retrieve Moeda
+    Detalhes da Moeda.
     """
     def get_object(self, pk):
         try:
@@ -38,6 +38,8 @@ class MoedaDetail(APIView):
 class CotacaoList(APIView):
     """
     Cotações das moedas por data.
+
+    Para filtrar por data também: ?dataInicial=2022-03-01&dataFinal=2022-03-18
     """
     def get(self, request, base, moeda, format=None):
         cotacoes = Cotacao.objects.filter(base=base, moeda=moeda).order_by('-data')
@@ -51,7 +53,9 @@ class CotacaoList(APIView):
 
 class CotacaoHighchartList(APIView):
     """
-    Cotações das moedas por data para o gráfico.
+    Cotações das moedas selecionadas por data. Resposta formatada para Highcharts.
+
+    Para filtrar por data também: ?dataInicial=2022-03-01&dataFinal=2022-03-18
     """
     def get(self, request, base, moeda, format=None):
         cotacoes = Cotacao.objects.all().order_by('-data')
@@ -63,10 +67,8 @@ class CotacaoHighchartList(APIView):
         if request.GET.get('dataFinal', None):
             cotacoes = cotacoes.filter(data__lte=request.GET.get('dataFinal'))
         
-        """
-        Formatar a resposta de acordo com o esperado pelo Highcharts,
-        e calcular a cotação de acordo com as moedas selecionadas.
-        """
+        # Formatar a resposta de acordo com o esperado pelo Highcharts,
+        # e calcular a cotação de acordo com as moedas selecionadas.
         moeda1 = cotacoes.filter(moeda=base) # Primeira moeda ex.: [USD]/BRL
         moeda2 = cotacoes.filter(moeda=moeda) # Segunda moeda ex.: USD/[BRL]
         base = cotacoes.filter(moeda__codigo='USD') # Moeda base da cotação, nesse caso é (dólar) fixo
