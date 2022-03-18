@@ -16,9 +16,8 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item {% if request.path == '/' %}active{% endif %}"><a href="{% url 'home' %}" class="nav-link">Início</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Moedas</a></li>
                 {% comment %} <li class="nav-item {% if request.path == '/moedas/' %}active{% endif %}"><a href="{% url 'moedas' %}" class="nav-link">Moedas</a></li> {% endcomment %}
-                {% comment %} <li class="nav-item cta {% if request.path == '/donate/' %}active{% endif %}"><a href="{% url 'donate' %}" class="nav-link">Ofertar</a></li> {% endcomment %}
+                {% comment %} <li class="nav-item cta {% if request.path == '/features/' %}active{% endif %}"><a href="{% url 'features' %}" class="nav-link">Solicitar Moedas</a></li> {% endcomment %}
             </ul>
         </div>
     </div>

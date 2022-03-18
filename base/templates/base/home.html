@@ -4,78 +4,62 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-end">
             <div class="col-md-9 ftco-animate pb-5">
-                <h1 class="mb-0 bread">Cotação USD/BRL</h1>
+                <h1 class="mb-0 bread" id="title">Cotação USD/BRL</h1>
             </div>
         </div>
     </div>
 </section>
+<div class="justify-content-center col-md-12" style="margin-top: 25px; margin-right: 10px">
+    <div class="row no-gutters">
+        <div class="col-md-12">
+            <div class="contact-wrap w-100 p-4">
+                <form method="POST" id="cotacoesForm" name="cotacoesForm" class="cotacoesForm">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="label" for="moedaBase">Moeda Base</label>
+                                <select class="form-control" name="moedaBase" id="moedaBase" required placeholder="Moeda Base">
+                                    {% for moeda in moedas %}
+                                    <option value="{{ moeda.codigo }}">{{ moeda.moeda }} - {{ moeda.simbolo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="label" for="moeda">Moeda</label>
+                                <select class="form-control" name="moeda" id="moeda" required placeholder="Moeda">
+                                    {% for moeda in moedas %}
+                                    <option value="{{ moeda.codigo }}">{{ moeda.moeda }} - {{ moeda.simbolo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="label" for="dataInicial">Data Inicial</label>
+                                <input type="date" class="form-control" name="dataInicial" id="dataInicial" required placeholder="Data Inicial" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="label" for="dataFinal">Data Final</label>
+                                <input type="date" class="form-control" name="dataFinal" id="dataFinal" required placeholder="Data Final" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <section class="ftco-section ftco-no-pb ftco-no-pt">
     <div class="container-fluid px-md-0">
         <div class="row no-gutters">
-            <div class="highcharts" id="highcharts" style="width: 100%; padding: 25px;"></div>
+            <div class="highcharts" id="highcharts" style="width: 100%; padding: 25px; height: 500px"></div>
         </div>
     </div>
 </section>
-
 {% endblock %} {% block script %}
-<script>
-    $.getJSON("https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json", function (data) {
-        Highcharts.chart("highcharts", {
-            chart: {
-                zoomType: "x",
-            },
-            title: {
-                text: "USD to EUR exchange rate over time",
-            },
-            subtitle: {
-                text: document.ontouchstart === undefined ? "Click and drag in the plot area to zoom in" : "Pinch the chart to zoom in",
-            },
-            xAxis: {
-                type: "datetime",
-            },
-            yAxis: {
-                title: {
-                    text: "Exchange rate",
-                },
-            },
-            legend: {
-                enabled: false,
-            },
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1,
-                        },
-                        stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get("rgba")],
-                        ],
-                    },
-                    marker: {
-                        radius: 2,
-                    },
-                    lineWidth: 1,
-                    states: {
-                        hover: {
-                            lineWidth: 1,
-                        },
-                    },
-                    threshold: null,
-                },
-            },
-
-            series: [
-                {
-                    type: "area",
-                    name: "USD to EUR",
-                    data: data,
-                },
-            ],
-        });
-    });
-</script>
+<script src="{% static 'base/js/home.js' %}?v={{ version }}"></script>
 {% endblock %}
