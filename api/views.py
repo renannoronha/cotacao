@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from moeda.models import Moeda, Cotacao
+from moeda.get_cotacoes import get_cotacoes
 
 from .serializers import MoedaSerializer, CotacaoSerializer
 
@@ -55,12 +56,19 @@ class CotacaoHighchartList(APIView):
     def get(self, request, base, moeda, format=None):
         cotacoes = Cotacao.objects.all().order_by('-data')
         if request.GET.get('dataInicial', None):
+            # Se a data inicial for menor que a data mais antiga registrada no sistema, buscar os dados que faltam na API
+            if Cotacao.objects.all().order_by('data').first().data - datetime.strptime(request.GET.get('dataInicial'), '%Y-%m-%d').date() >= timedelta(days=1):
+                get_cotacoes(datetime.strptime(request.GET.get('dataInicial'), '%Y-%m-%d').date(), Cotacao.objects.all().order_by('data').first().data)
             cotacoes = cotacoes.filter(data__gte=request.GET.get('dataInicial'))
         if request.GET.get('dataFinal', None):
             cotacoes = cotacoes.filter(data__lte=request.GET.get('dataFinal'))
         
-        base = cotacoes.filter(moeda=base)
-        moeda = cotacoes.filter(moeda=moeda)
-        dolar = cotacoes.filter(moeda__codigo='USD')
-        data = [[datetime(year=b.data.year, month=b.data.month, day=b.data.day).timestamp()*1000, (d.cotacao/b.cotacao)*m.cotacao] for (b, m, d) in zip(base, moeda, dolar)]
+        """
+        Formatar a resposta de acordo com o esperado pelo Highcharts,
+        e calcular a cotação de acordo com as moedas selecionadas.
+        """
+        moeda1 = cotacoes.filter(moeda=base) # Primeira moeda ex.: [USD]/BRL
+        moeda2 = cotacoes.filter(moeda=moeda) # Segunda moeda ex.: USD/[BRL]
+        base = cotacoes.filter(moeda__codigo='USD') # Moeda base da cotação, nesse caso é (dólar) fixo
+        data = [[datetime(year=b.data.year, month=b.data.month, day=b.data.day).timestamp()*1000, (b.cotacao/m1.cotacao)*m2.cotacao] for (m1, m2, b) in zip(moeda1, moeda2, base)]
         return Response(data)
