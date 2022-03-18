@@ -4,3 +4,4 @@ coinex
 *.sqlite3
 cotacao/settings.py
 assets.txt
+*.env
