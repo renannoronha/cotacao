@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
+from rangefilter.filters import DateRangeFilter
 from django_object_actions import DjangoObjectActions
 
 from .models import *
@@ -15,7 +16,10 @@ class MoedaAdmin(admin.ModelAdmin):
 @admin.register(Cotacao)
 class CotacaoAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_display = ['moeda', 'base', 'data', 'cotacao']
-    list_filter = ['moeda']
+    list_filter = (
+        'moeda',
+        ('data', DateRangeFilter)
+    )
     ordering = ['-data']
     
     def importar_cotacoes(modeladmin, request, queryset):
