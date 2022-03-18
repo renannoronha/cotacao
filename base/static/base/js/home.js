@@ -20,6 +20,11 @@ const setCookieValue = (name, value) => (document.cookie = name + "=" + value + 
 
 // Contruir o gráfico
 function buildChart() {
+    $("#moedaBase").attr('disabled', true);
+    $("#moeda").attr('disabled', true);
+    $("#dataInicial").attr('disabled', true);
+    $("#dataFinal").attr('disabled', true);
+    $("#carregando").html('Carregando...');
     moedaBase = $("#moedaBase option:selected").val();
     moeda = $("#moeda option:selected").val();
     moedaSimbolo = $("#moeda option:selected").text().split(" - ")[1];
@@ -27,6 +32,11 @@ function buildChart() {
     $.get({
         url: "/api/grafico/" + moedaBase + "/" + moeda + "/?format=json&dataInicial=" + $("#dataInicial").val() + "&dataFinal=" + $("#dataFinal").val(),
         success: function (data) {
+            $("#moedaBase").attr('disabled', false);
+            $("#moeda").attr('disabled', false);
+            $("#dataInicial").attr('disabled', false);
+            $("#dataFinal").attr('disabled', false);
+            $("#carregando").html('');
             Highcharts.chart("highcharts", {
                 chart: {
                     zoomType: "x",
