@@ -33,7 +33,6 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
-    'django_crontab',
     'django_object_actions',
     'rest_framework',
     'rangefilter',
@@ -139,10 +138,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ]
 }
-
-CRONJOBS = [
-    ('5 12 * * *', 'moeda.get_cotacoes.get_cotacoes', [None, None])
-]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
