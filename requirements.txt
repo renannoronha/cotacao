@@ -6,3 +6,4 @@ django-crontab
 python-decouple
 requests
 gunicorn
+django-heroku
