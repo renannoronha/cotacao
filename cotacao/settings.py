@@ -143,3 +143,5 @@ REST_FRAMEWORK = {
 CRONJOBS = [
     ('5 12 * * *', 'moeda.get_cotacoes.get_cotacoes', [None, None])
 ]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
