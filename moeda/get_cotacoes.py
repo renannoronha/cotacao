@@ -11,7 +11,10 @@ def get_cotacoes(dataInicial, dataFinal):
 
     # Setar valor inicial e final das datas para quando a função for chamada pelo cronjob
     if not dataInicial:
-        dataInicial = Cotacao.objects.all().order_by('-data').first().data
+        try:
+            dataInicial = Cotacao.objects.all().order_by('-data').first().data
+        except:
+            dataInicial = datetime.now().date() - timedelta(days=5)
     if not dataFinal:
         dataFinal = datetime.now().date()
     
