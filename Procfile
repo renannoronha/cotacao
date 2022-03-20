@@ -1,2 +1,2 @@
 web: gunicorn cotacao.wsgi
-release: ./release-tasks.sh
+release: python manage.py migrate
