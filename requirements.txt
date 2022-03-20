@@ -4,3 +4,4 @@ djangorestframework
 django-admin-rangefilter
 django-crontab
 python-decouple
+requests
