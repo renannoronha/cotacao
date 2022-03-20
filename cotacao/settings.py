@@ -146,6 +146,9 @@ CRONJOBS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-if '/app' in os.environ['HOME']:
-    import django_heroku
-    django_heroku.settings(locals())
+try:
+    if '/app' in os.environ['HOME']:
+        import django_heroku
+        django_heroku.settings(locals())
+except:
+    pass
