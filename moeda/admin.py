@@ -25,7 +25,7 @@ class CotacaoAdmin(DjangoObjectActions, admin.ModelAdmin):
     # Configuração do botão para buscar novas cotações.
     def importar_cotacoes(modeladmin, request, queryset):
         try:
-            get_cotacoes(datetime.strptime(str(Cotacao.objects.all().order_by('-data').first().data), '%Y-%m-%d'), datetime.today())
+            get_cotacoes(None, None)
             messages.success(request, "Cotacões atualizadas com sucesso!")
         except Exception as e:
             messages.error(request, "Erro ao buscar Cotações. " + str(e))
