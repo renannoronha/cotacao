@@ -25,3 +25,4 @@ class Cotacao(models.Model):
     class Meta:
         verbose_name = 'Cotação'
         verbose_name_plural = 'Cotações'
+        unique_together = (('moeda', 'base', 'data'),)
