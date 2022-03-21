@@ -18,5 +18,6 @@ class HomeView(BaseView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
         context['title'] = 'Cotações'
-        context['moedas'] = Moeda.objects.all()
+        context['moedaBase'] = Moeda.objects.filter(codigo='USD')
+        context['moedas'] = Moeda.objects.all().exclude(codigo='USD')
         return render(request, self.template_name, context)

@@ -59,12 +59,14 @@ class CotacaoHighchartList(APIView):
     """
     def get(self, request, base, moeda, format=None):
         cotacoes = Cotacao.objects.all().order_by('-data')
-        if request.GET.get('dataInicial', None):
+        if request.GET.get('dataInicial', None) and request.GET.get('dataFinal', None):
             # Se a data inicial for menor que a data mais antiga registrada no sistema, buscar os dados que faltam na API
             if Cotacao.objects.all().order_by('data').first().data - datetime.strptime(request.GET.get('dataInicial'), '%Y-%m-%d').date() >= timedelta(days=1):
-                get_cotacoes(datetime.strptime(request.GET.get('dataInicial'), '%Y-%m-%d').date(), request.GET.get('dataFinal', Cotacao.objects.all().order_by('data').first().data))
+                cotacao_date = Cotacao.objects.all().order_by('data').first().data # data mais antiga no sistema
+                get_date = datetime.strptime(request.GET.get('dataFinal'), '%Y-%m-%d').date() # dataFinal
+                dataFinal = get_date if get_date < cotacao_date else cotacao_date # seta a data mais antiga como data final
+                get_cotacoes(datetime.strptime(request.GET.get('dataInicial'), '%Y-%m-%d').date(), dataFinal)
             cotacoes = cotacoes.filter(data__gte=request.GET.get('dataInicial'))
-        if request.GET.get('dataFinal', None):
             cotacoes = cotacoes.filter(data__lte=request.GET.get('dataFinal'))
         
         # Formatar a resposta de acordo com o esperado pelo Highcharts,
