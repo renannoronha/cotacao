@@ -25,20 +25,23 @@ def get_cotacoes(dataInicial, dataFinal):
             data = rates['date']
             base = Moeda.objects.get(codigo=rates['base'])
             for moeda in Moeda.objects.all():
-                default = {
-                    'moeda': moeda,
-                    'base': base,
-                    'data': data,
-                    'cotacao': rates['rates'][moeda.codigo],
-                }
-                print(default)
-                (obj, created) = Cotacao.objects.update_or_create(
-                    moeda = moeda,
-                    base = base,
-                    data = data,
-                    cotacao = rates['rates'][moeda.codigo],
-                    defaults = default
-                )
+                try:
+                    default = {
+                        'moeda': moeda,
+                        'base': base,
+                        'data': data,
+                        'cotacao': rates['rates'][moeda.codigo],
+                    }
+                    print(default)
+                    (obj, created) = Cotacao.objects.update_or_create(
+                        moeda = moeda,
+                        base = base,
+                        data = data,
+                        cotacao = rates['rates'][moeda.codigo],
+                        defaults = default
+                    )
+                except:
+                    pass
         else:
             return r.raise_for_status()
         dataInicial = dataInicial + timedelta(days=1)
