@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label class="label" for="moedaBase">Moeda Base</label>
                                 <select class="form-control" name="moedaBase" id="moedaBase" required placeholder="Moeda Base">
-                                    {% for moeda in moedas %}
+                                    {% for moeda in moedaBase %}
                                     <option value="{{ moeda.codigo }}">{{ moeda.moeda }} - {{ moeda.simbolo }}</option>
                                     {% endfor %}
                                 </select>
